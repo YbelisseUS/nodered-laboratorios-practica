@@ -1,0 +1,469 @@
+[
+    {
+        "id": "8c4679662a81fe97",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "0249e4ed81f40873",
+        "type": "tab",
+        "label": "HVAC Separado D2",
+        "disabled": false,
+        "info": "Flujo limpio y preconfigurado para Dashboard 2.0"
+    },
+    {
+        "id": "b047f9f02fa84d19",
+        "type": "mqtt-broker",
+        "name": "Localhost Broker",
+        "broker": "localhost",
+        "port": 1883,
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": 4,
+        "keepalive": 15,
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "16a4b93caabe6334",
+        "type": "ui-base",
+        "name": "1 UI Name",
+        "path": "/dashboard",
+        "appIcon": "",
+        "includeClientData": true,
+        "acceptsClientConfig": [
+            "ui-notification",
+            "ui-control"
+        ],
+        "showPathInSidebar": false,
+        "headerContent": "page",
+        "navigationStyle": "default",
+        "titleBarStyle": "default",
+        "showReconnectNotification": true,
+        "notificationDisplayTime": 1,
+        "showDisconnectNotification": true,
+        "allowInstall": true
+    },
+    {
+        "id": "ec2603d50959e055",
+        "type": "ui-theme",
+        "name": "Theme Name",
+        "colors": {
+            "surface": "#fcfcfd",
+            "primary": "#0d74ce",
+            "bgPage": "#f9f9fb",
+            "groupBg": "#ffffff",
+            "groupOutline": "#d9d9e0"
+        },
+        "sizes": {
+            "density": "default",
+            "pagePadding": "12px",
+            "groupGap": "12px",
+            "groupBorderRadius": "4px",
+            "widgetGap": "12px"
+        }
+    },
+    {
+        "id": "fd2c30b9bb720c53",
+        "type": "ui-page",
+        "name": "Page Name",
+        "ui": "16a4b93caabe6334",
+        "path": "/page1",
+        "icon": "home",
+        "layout": "grid",
+        "theme": "ec2603d50959e055",
+        "breakpoints": [
+            {
+                "name": "Default",
+                "px": "0",
+                "cols": "3"
+            },
+            {
+                "name": "Tablet",
+                "px": "576",
+                "cols": "6"
+            },
+            {
+                "name": "Small Desktop",
+                "px": "768",
+                "cols": "9"
+            },
+            {
+                "name": "Desktop",
+                "px": "1024",
+                "cols": "12"
+            }
+        ],
+        "tabs": [],
+        "order": 1,
+        "className": "",
+        "visible": "true",
+        "disabled": "false"
+    },
+    {
+        "id": "bac3cbb070fdbd6e",
+        "type": "ui-group",
+        "name": "Monitoreo Industrial D2",
+        "page": "fd2c30b9bb720c53",
+        "width": 6,
+        "height": 1,
+        "order": 1,
+        "showTitle": true,
+        "className": "",
+        "visible": "true",
+        "disabled": "false",
+        "groupType": "default",
+        "keepLoaded": false,
+        "tab": ""
+    },
+    {
+        "id": "c8142a8b7092b3ad",
+        "type": "inject",
+        "z": "0249e4ed81f40873",
+        "name": "Trigger 5s",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "5",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "0.1",
+        "payload": "",
+        "payloadType": "date",
+        "x": 140,
+        "y": 140,
+        "wires": [
+            [
+                "f6fe36d878795b38"
+            ]
+        ]
+    },
+    {
+        "id": "f6fe36d878795b38",
+        "type": "change",
+        "z": "0249e4ed81f40873",
+        "name": "Generar Datos (JSONata)",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "($t := $round($random() * 20 + 20, 1); $h := $round($random() * 50 + 40, 1); $c := $floor($random() * 800 + 400); { \"temperature\": $t, \"humidity\": $h, \"co2\": $c, \"status\": ($t > 35 or $c > 1000 ? \"WARNING\" : \"NORMAL\"), \"timestamp\": $now() })",
+                "tot": "jsonata"
+            }
+        ],
+        "x": 380,
+        "y": 140,
+        "wires": [
+            [
+                "ff4b562daa7bbac1",
+                "4ca8d1bf5f724751",
+                "a708e9139968a78d",
+                "000bdc793f4fb078"
+            ]
+        ]
+    },
+    {
+        "id": "ff4b562daa7bbac1",
+        "type": "mqtt out",
+        "z": "0249e4ed81f40873",
+        "name": "MQTT Telemetría",
+        "topic": "factory/hvac/telemetry",
+        "qos": "0",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "b047f9f02fa84d19",
+        "x": 720,
+        "y": 60,
+        "wires": []
+    },
+    {
+        "id": "4ca8d1bf5f724751",
+        "type": "change",
+        "z": "0249e4ed81f40873",
+        "name": "Extraer Temperatura",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload.temperature",
+                "tot": "msg"
+            }
+        ],
+        "x": 690,
+        "y": 120,
+        "wires": [
+            [
+                "a1bed9c09066548c",
+                "20c97f4a0acfe6ee"
+            ]
+        ]
+    },
+    {
+        "id": "a708e9139968a78d",
+        "type": "change",
+        "z": "0249e4ed81f40873",
+        "name": "Extraer Humedad",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload.humidity",
+                "tot": "msg"
+            }
+        ],
+        "x": 680,
+        "y": 180,
+        "wires": [
+            [
+                "063ae9dd3a69ca23"
+            ]
+        ]
+    },
+    {
+        "id": "000bdc793f4fb078",
+        "type": "change",
+        "z": "0249e4ed81f40873",
+        "name": "Extraer Estado",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload.status",
+                "tot": "msg"
+            }
+        ],
+        "x": 670,
+        "y": 240,
+        "wires": [
+            [
+                "25bc2436e79e510c"
+            ]
+        ]
+    },
+    {
+        "id": "a1bed9c09066548c",
+        "type": "ui-gauge",
+        "z": "0249e4ed81f40873",
+        "name": "Gauge Temperatura",
+        "group": "bac3cbb070fdbd6e",
+        "order": 1,
+        "value": "payload",
+        "valueType": "msg",
+        "width": 3,
+        "height": 3,
+        "gtype": "gauge-34",
+        "gstyle": "needle",
+        "title": "Temperatura (°C)",
+        "alwaysShowTitle": false,
+        "units": "",
+        "icon": "",
+        "prefix": "",
+        "suffix": "",
+        "segments": [],
+        "min": 0,
+        "max": 50,
+        "sizeThickness": "",
+        "sizeGap": "",
+        "sizeKeyThickness": "",
+        "className": "",
+        "x": 980,
+        "y": 100,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "063ae9dd3a69ca23",
+        "type": "ui-gauge",
+        "z": "0249e4ed81f40873",
+        "name": "Gauge Humedad",
+        "group": "bac3cbb070fdbd6e",
+        "order": 2,
+        "value": "payload",
+        "valueType": "msg",
+        "width": 3,
+        "height": 3,
+        "gtype": "gauge-34",
+        "gstyle": "needle",
+        "title": "Humedad (%)",
+        "alwaysShowTitle": false,
+        "units": "",
+        "icon": "",
+        "prefix": "",
+        "suffix": "",
+        "segments": [],
+        "min": 0,
+        "max": 100,
+        "sizeThickness": "",
+        "sizeGap": "",
+        "sizeKeyThickness": "",
+        "className": "",
+        "x": 970,
+        "y": 160,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "20c97f4a0acfe6ee",
+        "type": "ui-chart",
+        "z": "0249e4ed81f40873",
+        "group": "bac3cbb070fdbd6e",
+        "name": "Gráfica Temperatura",
+        "label": "Historial de Temperatura",
+        "order": 3,
+        "chartType": "line",
+        "category": "Temperatura",
+        "categoryType": "str",
+        "xAxisLabel": "",
+        "xAxisProperty": "",
+        "xAxisPropertyType": "timestamp",
+        "xAxisType": "time",
+        "xAxisFormat": "",
+        "xAxisFormatType": "auto",
+        "xmin": "",
+        "xmax": "",
+        "yAxisLabel": "",
+        "yAxisProperty": "payload",
+        "yAxisPropertyType": "msg",
+        "ymin": "",
+        "ymax": "",
+        "bins": "",
+        "stackSeries": false,
+        "pointRadius": "",
+        "showLegend": true,
+        "removeOlder": "",
+        "removeOlderPoints": "",
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "textColor": [
+            "#666666"
+        ],
+        "textColorDefault": true,
+        "gridColor": [
+            "#e5e5e5"
+        ],
+        "gridColorDefault": true,
+        "width": 6,
+        "height": 4,
+        "className": "",
+        "interpolation": "linear",
+        "x": 980,
+        "y": 220,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "25bc2436e79e510c",
+        "type": "ui-text",
+        "z": "0249e4ed81f40873",
+        "group": "bac3cbb070fdbd6e",
+        "order": 4,
+        "width": 6,
+        "height": 1,
+        "name": "Texto Estado",
+        "label": "Estado del Sistema",
+        "format": "{{msg.payload}}",
+        "layout": "col-center",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#d57bd2",
+        "x": 960,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "2717fe64b2bc8909",
+        "type": "http in",
+        "z": "0249e4ed81f40873",
+        "name": "API GET /api/hvac/status",
+        "url": "/api/hvac/status",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 160,
+        "y": 340,
+        "wires": [
+            [
+                "dde660fc09b31457"
+            ]
+        ]
+    },
+    {
+        "id": "dde660fc09b31457",
+        "type": "change",
+        "z": "0249e4ed81f40873",
+        "name": "Respuesta JSON (JSONata)",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "{\"system\": \"HVAC Industrial Digital Twin\", \"status\": \"Active\", \"engine\": \"Dashboard 2.0 Components + JSONata\", \"protocols\": [\"MQTT\", \"HTTP REST\"], \"lastCheck\": $now()}",
+                "tot": "jsonata"
+            }
+        ],
+        "x": 450,
+        "y": 340,
+        "wires": [
+            [
+                "a2b6cae75275c632"
+            ]
+        ]
+    },
+    {
+        "id": "a2b6cae75275c632",
+        "type": "http response",
+        "z": "0249e4ed81f40873",
+        "name": "Enviar Respuesta",
+        "statusCode": "",
+        "headers": {
+            "Content-Type": "application/json"
+        },
+        "x": 730,
+        "y": 360,
+        "wires": []
+    }
+]
