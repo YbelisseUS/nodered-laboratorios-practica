@@ -1,18 +1,19 @@
 [
     {
-        "id": "8c4679662a81fe97",
+        "id": "2f344b7583fbf8fb",
         "type": "tab",
-        "label": "Flow 1",
+        "label": "Cliente Servidor",
         "disabled": false,
         "info": "",
         "env": []
     },
     {
-        "id": "0249e4ed81f40873",
+        "id": "97c182150cd1b476",
         "type": "tab",
-        "label": "HVAC Separado D2",
+        "label": "Cliente Dashboard",
         "disabled": false,
-        "info": "Flujo limpio y preconfigurado para Dashboard 2.0"
+        "info": "",
+        "env": []
     },
     {
         "id": "b047f9f02fa84d19",
@@ -138,332 +139,653 @@
         "tab": ""
     },
     {
-        "id": "c8142a8b7092b3ad",
+        "id": "4d390dfdf5d15011",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "broker.hivemq.com",
+        "port": 1883,
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": 4,
+        "keepalive": 60,
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "07d64fddeb1b7249",
+        "type": "ui-theme",
+        "name": "Default Theme",
+        "colors": {
+            "surface": "#fcfcfd",
+            "primary": "#0d74ce",
+            "bgPage": "#f9f9fb",
+            "groupBg": "#ffffff",
+            "groupOutline": "#d9d9e0"
+        },
+        "sizes": {
+            "density": "default",
+            "pagePadding": "12px",
+            "groupGap": "12px",
+            "groupBorderRadius": "4px",
+            "widgetGap": "12px"
+        }
+    },
+    {
+        "id": "2c765a627d6cc6fc",
+        "type": "ui-page",
+        "name": "Page 1",
+        "ui": "16a4b93caabe6334",
+        "path": "/page1",
+        "icon": "home",
+        "layout": "grid",
+        "theme": "07d64fddeb1b7249",
+        "breakpoints": [
+            {
+                "name": "Default",
+                "px": 0,
+                "cols": 3
+            },
+            {
+                "name": "Tablet",
+                "px": 576,
+                "cols": 6
+            },
+            {
+                "name": "Small Desktop",
+                "px": 768,
+                "cols": 9
+            },
+            {
+                "name": "Desktop",
+                "px": 1024,
+                "cols": 12
+            }
+        ],
+        "tabs": [],
+        "order": 1,
+        "className": "",
+        "visible": "true",
+        "disabled": "false"
+    },
+    {
+        "id": "bd0c863f586eb869",
+        "type": "ui-group",
+        "name": "Group 1",
+        "page": "2c765a627d6cc6fc",
+        "width": 6,
+        "height": 1,
+        "order": 1,
+        "showTitle": true,
+        "className": "",
+        "visible": true,
+        "disabled": false,
+        "groupType": "default",
+        "tab": ""
+    },
+    {
+        "id": "89a8de06f3e37bd2",
         "type": "inject",
-        "z": "0249e4ed81f40873",
-        "name": "Trigger 5s",
+        "z": "2f344b7583fbf8fb",
+        "name": "Disparador Temp c/2 min",
         "props": [
             {
                 "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
             }
         ],
-        "repeat": "5",
+        "repeat": "120",
         "crontab": "",
-        "once": true,
-        "onceDelay": "0.1",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
         "payload": "",
         "payloadType": "date",
-        "x": 140,
-        "y": 140,
+        "x": 230,
+        "y": 240,
         "wires": [
             [
-                "f6fe36d878795b38"
+                "13dc3a3d37aee3ba"
             ]
         ]
     },
     {
-        "id": "f6fe36d878795b38",
+        "id": "13dc3a3d37aee3ba",
         "type": "change",
-        "z": "0249e4ed81f40873",
-        "name": "Generar Datos (JSONata)",
+        "z": "2f344b7583fbf8fb",
+        "name": "Simula Temp (15-35°C)",
         "rules": [
             {
                 "t": "set",
                 "p": "payload",
                 "pt": "msg",
-                "to": "($t := $round($random() * 20 + 20, 1); $h := $round($random() * 50 + 40, 1); $c := $floor($random() * 800 + 400); { \"temperature\": $t, \"humidity\": $h, \"co2\": $c, \"status\": ($t > 35 or $c > 1000 ? \"WARNING\" : \"NORMAL\"), \"timestamp\": $now() })",
+                "to": "$round($random() * (35 - 15) + 15, 1)",
                 "tot": "jsonata"
             }
         ],
-        "x": 380,
-        "y": 140,
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 490,
+        "y": 280,
         "wires": [
             [
-                "ff4b562daa7bbac1",
-                "4ca8d1bf5f724751",
-                "a708e9139968a78d",
-                "000bdc793f4fb078"
+                "33611b3d8843f438",
+                "51825ac9ffbdf76f"
             ]
         ]
     },
     {
-        "id": "ff4b562daa7bbac1",
+        "id": "33611b3d8843f438",
         "type": "mqtt out",
-        "z": "0249e4ed81f40873",
-        "name": "MQTT Telemetría",
-        "topic": "factory/hvac/telemetry",
-        "qos": "0",
+        "z": "2f344b7583fbf8fb",
+        "name": "Publica Temp MQTT",
+        "topic": "invernadero/temperatura",
+        "qos": "",
         "retain": "",
         "respTopic": "",
         "contentType": "",
         "userProps": "",
         "correl": "",
         "expiry": "",
-        "broker": "b047f9f02fa84d19",
-        "x": 720,
-        "y": 60,
+        "broker": "4d390dfdf5d15011",
+        "x": 760,
+        "y": 300,
         "wires": []
     },
     {
-        "id": "4ca8d1bf5f724751",
+        "id": "51825ac9ffbdf76f",
+        "type": "debug",
+        "z": "2f344b7583fbf8fb",
+        "name": "Resultado 1",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 730,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "5f391960c375d2fb",
+        "type": "inject",
+        "z": "2f344b7583fbf8fb",
+        "name": "Disparador Hum c/1 min",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "60",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 230,
+        "y": 480,
+        "wires": [
+            [
+                "4c79400806705833"
+            ]
+        ]
+    },
+    {
+        "id": "4c79400806705833",
         "type": "change",
-        "z": "0249e4ed81f40873",
-        "name": "Extraer Temperatura",
+        "z": "2f344b7583fbf8fb",
+        "name": "Simula Hum (40-90%)",
         "rules": [
             {
                 "t": "set",
                 "p": "payload",
                 "pt": "msg",
-                "to": "payload.temperature",
-                "tot": "msg"
+                "to": "$round($random() * (90 - 40) + 40, 1)",
+                "tot": "jsonata"
             }
         ],
-        "x": 690,
-        "y": 120,
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 540,
+        "y": 480,
         "wires": [
             [
-                "a1bed9c09066548c",
-                "20c97f4a0acfe6ee"
+                "372b1560b05e8e78",
+                "8e67e551049c4ffc"
             ]
         ]
     },
     {
-        "id": "a708e9139968a78d",
+        "id": "8e67e551049c4ffc",
+        "type": "mqtt out",
+        "z": "2f344b7583fbf8fb",
+        "name": "Publica Hum MQTT",
+        "topic": "invernadero/humedad",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "4d390dfdf5d15011",
+        "x": 850,
+        "y": 520,
+        "wires": []
+    },
+    {
+        "id": "372b1560b05e8e78",
+        "type": "debug",
+        "z": "2f344b7583fbf8fb",
+        "name": "debug 2",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 800,
+        "y": 440,
+        "wires": []
+    },
+    {
+        "id": "0d82cea4f878773c",
+        "type": "inject",
+        "z": "2f344b7583fbf8fb",
+        "name": "Disparador Estado Sistema",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 230,
+        "y": 660,
+        "wires": [
+            [
+                "b133bee597d46fae"
+            ]
+        ]
+    },
+    {
+        "id": "b133bee597d46fae",
         "type": "change",
-        "z": "0249e4ed81f40873",
-        "name": "Extraer Humedad",
+        "z": "2f344b7583fbf8fb",
+        "name": "Estructura JSON Estado",
         "rules": [
             {
                 "t": "set",
                 "p": "payload",
                 "pt": "msg",
-                "to": "payload.humidity",
-                "tot": "msg"
+                "to": "{   \"sistema\": {     \"nombre\": \"Riego Inteligente\",     \"ubicacion\": \"Invernadero 1\",     \"estado\": {       \"riego\": \"apagado\",       \"alarmaTemperatura\": false,       \"alarmaHumedad\": false     }   } }",
+                "tot": "jsonata"
             }
         ],
-        "x": 680,
-        "y": 180,
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 550,
+        "y": 660,
         "wires": [
             [
-                "063ae9dd3a69ca23"
+                "753e5c5b34e9705c",
+                "f606d204454ebbc7"
             ]
         ]
     },
     {
-        "id": "000bdc793f4fb078",
-        "type": "change",
-        "z": "0249e4ed81f40873",
-        "name": "Extraer Estado",
-        "rules": [
-            {
-                "t": "set",
-                "p": "payload",
-                "pt": "msg",
-                "to": "payload.status",
-                "tot": "msg"
-            }
-        ],
-        "x": 670,
-        "y": 240,
+        "id": "753e5c5b34e9705c",
+        "type": "mqtt out",
+        "z": "2f344b7583fbf8fb",
+        "name": "Publica Estado MQTT",
+        "topic": "invernadero/estado",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "4d390dfdf5d15011",
+        "x": 840,
+        "y": 680,
+        "wires": []
+    },
+    {
+        "id": "f606d204454ebbc7",
+        "type": "debug",
+        "z": "2f344b7583fbf8fb",
+        "name": "debug 3",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 800,
+        "y": 620,
+        "wires": []
+    },
+    {
+        "id": "40345441a36ebcfd",
+        "type": "mqtt in",
+        "z": "97c182150cd1b476",
+        "name": "Recibe Temp MQTT",
+        "topic": "invernadero/temperatura",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "4d390dfdf5d15011",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 210,
+        "y": 160,
         "wires": [
             [
-                "25bc2436e79e510c"
+                "68e4e03dab3d02d4"
             ]
         ]
     },
     {
-        "id": "a1bed9c09066548c",
+        "id": "68e4e03dab3d02d4",
         "type": "ui-gauge",
-        "z": "0249e4ed81f40873",
-        "name": "Gauge Temperatura",
-        "group": "bac3cbb070fdbd6e",
-        "order": 1,
+        "z": "97c182150cd1b476",
+        "name": "Temperatura",
+        "group": "bd0c863f586eb869",
+        "order": 4,
         "value": "payload",
         "valueType": "msg",
         "width": 3,
         "height": 3,
-        "gtype": "gauge-34",
+        "gtype": "gauge-half",
         "gstyle": "needle",
-        "title": "Temperatura (°C)",
+        "title": "Temperatura Suelo (°C)",
         "alwaysShowTitle": false,
-        "units": "",
+        "floatingTitlePosition": "top-left",
+        "units": "units",
         "icon": "",
         "prefix": "",
         "suffix": "",
-        "segments": [],
+        "segments": [
+            {
+                "from": "0",
+                "color": "#5cd65c",
+                "text": "",
+                "textType": "label"
+            },
+            {
+                "from": "15",
+                "color": "#ffc800",
+                "text": "",
+                "textType": "label"
+            },
+            {
+                "from": "30",
+                "color": "#ea5353",
+                "text": "",
+                "textType": "label"
+            }
+        ],
         "min": 0,
-        "max": 50,
-        "sizeThickness": "",
-        "sizeGap": "",
-        "sizeKeyThickness": "",
+        "max": "50",
+        "sizeThickness": 16,
+        "sizeGap": 4,
+        "sizeKeyThickness": 8,
+        "styleRounded": true,
+        "styleGlow": false,
         "className": "",
-        "x": 980,
-        "y": 100,
-        "wires": [
-            []
-        ]
-    },
-    {
-        "id": "063ae9dd3a69ca23",
-        "type": "ui-gauge",
-        "z": "0249e4ed81f40873",
-        "name": "Gauge Humedad",
-        "group": "bac3cbb070fdbd6e",
-        "order": 2,
-        "value": "payload",
-        "valueType": "msg",
-        "width": 3,
-        "height": 3,
-        "gtype": "gauge-34",
-        "gstyle": "needle",
-        "title": "Humedad (%)",
-        "alwaysShowTitle": false,
-        "units": "",
-        "icon": "",
-        "prefix": "",
-        "suffix": "",
-        "segments": [],
-        "min": 0,
-        "max": 100,
-        "sizeThickness": "",
-        "sizeGap": "",
-        "sizeKeyThickness": "",
-        "className": "",
-        "x": 970,
+        "x": 410,
         "y": 160,
         "wires": [
             []
         ]
     },
     {
-        "id": "20c97f4a0acfe6ee",
-        "type": "ui-chart",
-        "z": "0249e4ed81f40873",
-        "group": "bac3cbb070fdbd6e",
-        "name": "Gráfica Temperatura",
-        "label": "Historial de Temperatura",
+        "id": "137754644820c8b8",
+        "type": "ui-gauge",
+        "z": "97c182150cd1b476",
+        "name": "Humedad",
+        "group": "bd0c863f586eb869",
         "order": 3,
-        "chartType": "line",
-        "category": "Temperatura",
-        "categoryType": "str",
-        "xAxisLabel": "",
-        "xAxisProperty": "",
-        "xAxisPropertyType": "timestamp",
-        "xAxisType": "time",
-        "xAxisFormat": "",
-        "xAxisFormatType": "auto",
-        "xmin": "",
-        "xmax": "",
-        "yAxisLabel": "",
-        "yAxisProperty": "payload",
-        "yAxisPropertyType": "msg",
-        "ymin": "",
-        "ymax": "",
-        "bins": "",
-        "stackSeries": false,
-        "pointRadius": "",
-        "showLegend": true,
-        "removeOlder": "",
-        "removeOlderPoints": "",
-        "colors": [
-            "#1f77b4",
-            "#aec7e8",
-            "#ff7f0e",
-            "#2ca02c",
-            "#98df8a",
-            "#d62728",
-            "#ff9896",
-            "#9467bd",
-            "#c5b0d5"
+        "value": "payload",
+        "valueType": "msg",
+        "width": 3,
+        "height": 3,
+        "gtype": "gauge-half",
+        "gstyle": "needle",
+        "title": "Humedad Suelo (%)",
+        "alwaysShowTitle": false,
+        "floatingTitlePosition": "top-left",
+        "units": "units",
+        "icon": "",
+        "prefix": "",
+        "suffix": "",
+        "segments": [
+            {
+                "from": "0",
+                "color": "#5cd65c",
+                "text": "",
+                "textType": "label"
+            },
+            {
+                "from": "40",
+                "color": "#ffc800",
+                "text": "",
+                "textType": "label"
+            },
+            {
+                "from": "70",
+                "color": "#ea5353",
+                "text": "",
+                "textType": "label"
+            }
         ],
-        "textColor": [
-            "#666666"
-        ],
-        "textColorDefault": true,
-        "gridColor": [
-            "#e5e5e5"
-        ],
-        "gridColorDefault": true,
-        "width": 6,
-        "height": 4,
+        "min": 0,
+        "max": "100",
+        "sizeThickness": 16,
+        "sizeGap": 4,
+        "sizeKeyThickness": 8,
+        "styleRounded": true,
+        "styleGlow": false,
         "className": "",
-        "interpolation": "linear",
-        "x": 980,
-        "y": 220,
+        "x": 460,
+        "y": 300,
         "wires": [
             []
         ]
     },
     {
-        "id": "25bc2436e79e510c",
-        "type": "ui-text",
-        "z": "0249e4ed81f40873",
-        "group": "bac3cbb070fdbd6e",
-        "order": 4,
-        "width": 6,
-        "height": 1,
-        "name": "Texto Estado",
-        "label": "Estado del Sistema",
-        "format": "{{msg.payload}}",
-        "layout": "col-center",
-        "style": false,
-        "font": "",
-        "fontSize": 16,
-        "color": "#d57bd2",
-        "x": 960,
-        "y": 280,
-        "wires": []
-    },
-    {
-        "id": "2717fe64b2bc8909",
-        "type": "http in",
-        "z": "0249e4ed81f40873",
-        "name": "API GET /api/hvac/status",
-        "url": "/api/hvac/status",
-        "method": "get",
-        "upload": false,
-        "swaggerDoc": "",
-        "x": 160,
-        "y": 340,
+        "id": "7be01693fbb84fb7",
+        "type": "mqtt in",
+        "z": "97c182150cd1b476",
+        "name": "Recibe Humedad MQTT",
+        "topic": "invernadero/humedad",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "4d390dfdf5d15011",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 250,
+        "y": 300,
         "wires": [
             [
-                "dde660fc09b31457"
+                "137754644820c8b8"
             ]
         ]
     },
     {
-        "id": "dde660fc09b31457",
+        "id": "f5d0a10131d9a4f1",
+        "type": "mqtt in",
+        "z": "97c182150cd1b476",
+        "name": "Recibe Estado MQTT",
+        "topic": "invernadero/estado",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "4d390dfdf5d15011",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 200,
+        "y": 380,
+        "wires": [
+            [
+                "1ca63ab293810740",
+                "e9512c40076fcbd7"
+            ]
+        ]
+    },
+    {
+        "id": "1ca63ab293810740",
         "type": "change",
-        "z": "0249e4ed81f40873",
-        "name": "Respuesta JSON (JSONata)",
+        "z": "97c182150cd1b476",
+        "name": "Extrae Estado Riego",
         "rules": [
             {
                 "t": "set",
                 "p": "payload",
                 "pt": "msg",
-                "to": "{\"system\": \"HVAC Industrial Digital Twin\", \"status\": \"Active\", \"engine\": \"Dashboard 2.0 Components + JSONata\", \"protocols\": [\"MQTT\", \"HTTP REST\"], \"lastCheck\": $now()}",
+                "to": "payload.sistema.estado.riego",
                 "tot": "jsonata"
             }
         ],
-        "x": 450,
-        "y": 340,
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 440,
+        "y": 380,
         "wires": [
             [
-                "a2b6cae75275c632"
+                "e1142b0e80ca7a96"
             ]
         ]
     },
     {
-        "id": "a2b6cae75275c632",
-        "type": "http response",
-        "z": "0249e4ed81f40873",
-        "name": "Enviar Respuesta",
-        "statusCode": "",
-        "headers": {
-            "Content-Type": "application/json"
-        },
-        "x": 730,
-        "y": 360,
+        "id": "e1142b0e80ca7a96",
+        "type": "ui-text",
+        "z": "97c182150cd1b476",
+        "group": "bd0c863f586eb869",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "name": "Estado del Riego",
+        "label": "Estado del Riego",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#717171",
+        "wrapText": false,
+        "className": "",
+        "value": "payload",
+        "valueType": "msg",
+        "x": 650,
+        "y": 380,
+        "wires": []
+    },
+    {
+        "id": "e9512c40076fcbd7",
+        "type": "change",
+        "z": "97c182150cd1b476",
+        "name": "Extrae Info Invernadero",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload.sistema.nombre & \" - \" & payload.sistema.ubicacion",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 430,
+        "y": 440,
+        "wires": [
+            [
+                "2861f11eef4fce17"
+            ]
+        ]
+    },
+    {
+        "id": "2861f11eef4fce17",
+        "type": "ui-text",
+        "z": "97c182150cd1b476",
+        "group": "bd0c863f586eb869",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "name": "Ubicación",
+        "label": "Ubicación",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#717171",
+        "wrapText": false,
+        "className": "",
+        "value": "payload",
+        "valueType": "msg",
+        "x": 620,
+        "y": 440,
         "wires": []
     }
 ]
